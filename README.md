@@ -1,6 +1,7 @@
 Real-time BCI platform used to assess performance when combining motor imagery and steady-state visual evoked potential signals
 
 Used for the following publications:
+
 B. J. Edelman et al., “Exploring Cognitive Flexibility With a
 Noninvasive BCI Using Simultaneous Steady-State Visual Evoked
 Potentials and Sensorimotor Rhythms,” IEEE Transactions on Neural
