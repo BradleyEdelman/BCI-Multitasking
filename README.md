@@ -1,3 +1,5 @@
+# Brain-computer interface - Multitasking/Cognitive Flexibility
+
 Real-time BCI platform used to assess performance when combining motor imagery and steady-state visual evoked potential signals
 
 Used for the following publications:
