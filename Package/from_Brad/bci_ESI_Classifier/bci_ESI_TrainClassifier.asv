@@ -1,0 +1,125 @@
+function [hObject,handles]=bci_ESI_TrainClassifier(hObject,handles)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% CHECK TRAINING PARAMETERS AND PREPARE DATA FROM TRAINING FILES
+[hObject,handles]=bci_ESI_TrainPrepare(hObject,handles);
+        
+
+if isequal(get(hObject,'userdata'),1)
+    
+    spatdomainfield=handles.TRAINING.spatdomainfield;
+    
+    % DEFINE VARIOUS SAVE PATHS
+    savefiledir=handles.SYSTEM.savefiledir;
+
+    featdir=strcat(savefiledir,'\Features');
+    handles.TRAINING.featdir=featdir;
+    if ~exist(featdir,'dir')
+        mkdir(featdir)
+    end
+
+    featspatdir=strcat(featdir,'\',SpatDomainField);
+    handles.TRAINING.(SpatDomainField).features.dir=featspatdir;
+    if ~exist(featspatdir,'dir')
+        mkdir(featspatdir)
+    end
+
+    tempdomain=get(handles.tempdomain,'value');
+    switch tempdomain
+        case 1 % None
+        case 2 % Frequency
+
+            freqanalysis=handles.SYSTEM.mwparam.freqvect;
+            freqdisp=[{'Freq';'All'};cellstr(num2str(freqanalysis'));{'Broadband'}];
+            
+            
+            switch traintype
+                case 1 % None
+                case 2 % Linear Regression
+
+                    [hObject,handles]=bci_ESI_TrainFreq(hObject,handles);
+
+                case 3 % Mahalanobis Distance
+
+                    [hObject,handles]=bci_ESI_TrainFreq(hObject,handles);
+
+                case 4 % Linear Discriminant Analysis
+
+                    lambdaanalysis=.05:.05:1;
+                    lambdadisp=[{'Lambda';'All'};cellstr(num2str(lambdaanalysis'))];
+                    handles.TRAINING.param.lambda=lambdaanalysis;
+
+                    gammaanalysis=.05:.05:1;
+                    gammadisp=[{'Gamma';'All'};cellstr(num2str(gammaanalysis'))];
+                    handles.TRAINING.param.gamma=gammaanalysis;
+
+                    [hObject,handles]=bci_ESI_TrainFreq(hObject,handles);
+                    set(handles.freqfeatlambda,'string',lambdadisp,'value',1);
+                    set(handles.freqfeatgamma,'string',gammadisp,'value',1);
+
+                case 5 % Principle Component Analysis
+
+                    pcanalysis=1:size(handles.SYSTEM.Electrodes.current.eLoc,2);
+                    pcdisp=[{'PC';'All'};cellstr(num2str(pcanalysis'))];
+                    handles.TRAINING.param.pc=pcdisp;
+
+                    [hObject,handles]=bci_ESI_TrainFreq(hObject,handles);
+                    set(handles.freqfeatpc,'string',pcdisp,'value',1);
+
+                case 6 % Fisher's Linear Discriminant
+
+                    lambdaanalysis=.05:.05:1;
+                    lambdadisp=[{'Lambda';'All'};cellstr(num2str(lambdaanalysis'))];
+                    handles.TRAINING.param.lambda=lambdaanalysis;
+
+                    gammaanalysis=.05:.05:1;
+                    gammadisp=[{'Gamma';'All'};cellstr(num2str(gammaanalysis'))];
+                    handles.TRAINING.param.gamma=gammaanalysis;
+
+                    [hObject,handles]=bci_ESI_TrainFreq(hObject,handles);
+                    set(handles.freqfeatlambda,'string',lambdadisp,'value',1);
+                    set(handles.freqfeatgamma,'string',gammadisp,'value',1);
+
+                case 7 % Support Vector Machine
+                case 8 % Convolutional Neural Network
+            end
+            set(handles.freqfeatfreq,'string',freqdisp,'value',1);
+
+        case 3 % Time
+
+            windowanalysis=100:100:500;
+            windowdisp=[{'Win';'All'};cellstr(num2str(windowanalysis'))];     
+            handles.TRAINING.param.windows=windowanalysis;
+
+            traintype=get(handles.traintype,'value');
+            switch traintype
+                case 1 % None
+                case 2 % Linear Regression
+                    
+                    [hObject,handles]=bci_ESI_RegressionTime(hObject,handles);
+
+                case 3 % Mahalanobis Distance
+                    
+                    [hObject,handles]=bci_ESI_MahalTime(hObject,handles);
+
+                case 4 % Linear Discriminant Analysis
+                    
+                    lambdaanalysis=.05:.05:1;
+                    lambdadisp=[{'Lambda';'All'};cellstr(num2str(lambdaanalysis'))];
+                    handles.TRAINING.param.lambda=lambdaanalysis;
+
+                    [hObject,handles]=bci_ESI_LDATime(hObject,handles);
+                    set(handles.timefeatlambda,'string',lambdadisp,'value',1);
+                    
+                case 5 % Principle Component Analysis
+                case 6 % Fisher's Linear Discriminant
+                case 7 % Support Vector Machine
+                case 8 % Convolutional Neural Network
+            end
+            set(handles.timefeatwindow,'string',windowdisp,'value',1);
+
+    end
+    
+end
+        
+

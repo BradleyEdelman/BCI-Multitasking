@@ -1,0 +1,34 @@
+function [hObject,handles]=bci_ESI_DataList(hObject,handles,Action,DataList1,DataList2)
+
+switch Action
+    case 'Add'
+        
+    case 'Remove'
+        
+    case 'Clear'
+        
+      
+    case 'Copy'
+        
+        if ~isempty(DataList2)
+            
+            data2=get(handles.(DataList1)),'Data')
+            
+            
+            
+            
+%             && ~isempty(get(handles.(DataList2),'String'))
+            set(handles.(DataList1),'String',get(handles.(DataList2),'String'));
+        end
+
+end
+        
+ 
+
+        
+        
+        
+        
+        
+        
+        

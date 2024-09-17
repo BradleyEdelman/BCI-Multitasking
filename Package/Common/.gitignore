@@ -1,0 +1,9 @@
+syntax: glob
+*.m~
+*.asv
+mvgc/docs
+boundedline/Inpaint*
+CSDtoolbox/doc
+CSDtoolbox/exam
+FastICA/CVS
+boundedline/*readme*
